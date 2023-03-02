@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize')
 const connection = require('./database')
 
-const User = connection.define('users', {
+const Message = connection.define('messages', {
     name: {
         type: Sequelize.STRING,
         allowNull: false
@@ -10,15 +10,16 @@ const User = connection.define('users', {
         type: Sequelize.STRING,
         allowNull: false
     },
-    password: {
+    reason: {
         type: Sequelize.STRING,
         allowNull: false
     },
-    username: {
-        type: Sequelize.STRING,
+    message: {
+        type: Sequelize.TEXT,
         allowNull: false
     }
 })
 
+Message.sync({force: false}).then(() => {})
 
-module.exports = User
+module.exports = Message
