@@ -1,5 +1,8 @@
 const Users = require('../models/Users')
 const validator = require('validator')
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+const secret = require('../shared/secretJWT')
 
 class UserController {
 
@@ -36,6 +39,43 @@ class UserController {
         res.status(200)
         res.json({success: "O seu cadastro foi realizado com sucesso!"})
     }
+
+    async login(req, res) {
+        const {username, password, remember} = req.body
+        if(username === "" || username === undefined || password === "" || password === undefined) {
+            res.status(400)
+            res.json({err: "Você deve preencher todos os campos."})
+        }
+
+        const user = await Users.findByUsername(username)
+        if(user == undefined) {
+            res.status(404)
+            res.json({err: "Usuário ou senha incorretos."})
+        } else {
+            const correct = bcrypt.compareSync(password, user.password)
+            if (correct) {
+                jwt.sign({username: username}, secret, {expiresIn: remember ? "1h" : "168h"}, (err, token) => {
+                    if(err) {
+                        res.status(400)
+                        res.json({err: "Falha interna."})
+                    } else {
+                        res.status(200)
+                        res.json({token: token})
+                    }
+                })
+            } else {
+                res.status(401)
+                res.json({err: "Usuário ou senha incorretos."})
+            }
+        }
+    }
+
+    async authorization(req, res) {
+        res.status(200)
+        res.json({success: "Você já está logado."})
+    }
+
+
 }
 
 module.exports = new UserController()
