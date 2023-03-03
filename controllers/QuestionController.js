@@ -1,6 +1,5 @@
 const Questions = require('../models/Questions')
 
-
 class QuestionController {
 
 

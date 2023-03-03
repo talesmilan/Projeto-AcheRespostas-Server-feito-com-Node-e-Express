@@ -1,6 +1,5 @@
 const Question = require('../database/Question')
 
-
 class Questions {
 
     async displayQuestions(page) {
