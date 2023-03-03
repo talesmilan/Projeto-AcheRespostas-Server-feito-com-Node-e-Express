@@ -17,4 +17,5 @@ router.get("/questions", QuestionController.index)
 router.get("/question/:id", QuestionController.findQuestion)
 router.post("/answer", authToken, AnswerController.newAnswer)
 router.get("/answers/:id", AnswerController.findAnswers)
+router.get("/questions/:topics", QuestionController.findTopics)
 module.exports = router

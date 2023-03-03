@@ -47,6 +47,28 @@ class Questions {
         }
     }
 
+    async findByTopics(topics, page) {
+        try {
+            var offset = 0
+            if (isNaN(page) || page == 1) {
+                offset = 0
+            } else {
+                offset = (parseInt(page) - 1) * 5
+            }
+            const questions = await Question.findAndCountAll({
+                where: {topics: topics},
+                limit: 5,
+                offset: offset,
+                order: [
+                    ['id', 'DESC']
+                ]
+            })
+            return questions
+        } catch(err) {
+            console.log(err)
+            return null
+        }
+    }
 
 }
 

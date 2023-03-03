@@ -48,6 +48,26 @@ class QuestionController {
         }
     }
 
+    async findTopics(req, res) {
+        const topics = req.params.topics
+        var page = req.query.page
+        if(page == undefined) {
+            page = 1
+        }
+        if(topics == undefined || (!isNaN(topics))){
+            res.status(400)
+            res.json({err: "O tópico não é um número."})
+        } else {
+            const questions = await Questions.findByTopics(topics, page)
+            if(questions != undefined) {
+                res.status(200)
+                res.json(questions)
+            } else {
+                res.status(404)
+                res.json({err: "Sua busca não foi encontrada."})
+            }
+        }
+    }
 
 }
 
