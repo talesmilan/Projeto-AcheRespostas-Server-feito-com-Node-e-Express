@@ -10,14 +10,15 @@ function auth(req, res, next) {
         var token = bearer[1]
         if(token === "") {
             res.status(401)
-            res.json({err: "Token inválido."})
+            res.json({err: "Você precisa estar logado para fazer esta operação."})
         }
         jwt.verify(token, secret, (err, data) => {
             if(err) {
                 res.status(401)
-                res.json({err: "Token inválido."})
+                res.json({err: "Você precisa estar logado para fazer esta operação."})
             } else {
                 req.token = token
+                req.username = data.username
                 next()
                 return
             }
@@ -25,7 +26,7 @@ function auth(req, res, next) {
 
     } else {
         res.status(401)
-        res.json({err: "Token inválido."})
+        res.json({err: "Você precisa estar logado para fazer esta operação."})
     }
 }
 

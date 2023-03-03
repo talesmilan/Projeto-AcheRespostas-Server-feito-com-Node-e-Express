@@ -23,8 +23,18 @@ class Users {
             return result
         } catch(err) {
             console.log(err)
+            return null
         }
+    }
 
+    async findByEmail(email) {
+        try {
+            const result = await User.findOne({where: {email: email}}) 
+            return result
+        } catch(err) {
+            console.log(err)
+            return null
+        }
     }
 
 }
